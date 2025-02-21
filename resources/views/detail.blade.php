@@ -9,12 +9,12 @@
 </head>
 
 <body>
-    <form action="/login" method="POST">
-        @csrf
-        <input type="text" placeholder="Email" name="email">
-        <input type="text" placeholder="Password" name="password">
-        <button>Submit</button>
-    </form>
+    <a href="{{ route('job.index') }}">Back to homepage</a>
+
+    <h1>Detail {{ $job->company }}</h1>
+    <p>Company: {{ $job->company }}</p>
+    <p>Salary: {{ $job->salary }}</p>
+    <p>Position: {{ $job->position }}</p>
 </body>
 
 </html>

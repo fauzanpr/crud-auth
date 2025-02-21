@@ -9,21 +9,21 @@
 </head>
 
 <body>
-    <form action="{{ route('job.store') }}" method="POST">
+    <form action="{{ route('job.update', $job->id) }}" method="POST">
         @csrf
+        @method("PUT")
         <div>
             <label for="company">Company</label>
-            <input required type="text" id="company" name="company">
+            <input type="text" id="company" name="company" value="{{ $job->company }}">
         </div>
         <div>
             <label for="salary">Salary</label>
-            <input type="number" id="salary" name="salary">
+            <input type="number" id="salary" name="salary" value="{{ $job->salary }}">
         </div>
         <div>
             <label for="position">Position</label>
-            <input type="text" id="position" name="position">
+            <input type="text" id="position" name="position" value="{{ $job->position }}">
         </div>
-        <button type="button">Cancel</button>
         <button>Submit</button>
     </form>
 </body>

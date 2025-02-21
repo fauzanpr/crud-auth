@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use Exception;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -33,12 +34,18 @@ class JobController extends Controller
      */
     public function store(Request $request)
     {
-        Job::create([
-            "company" => $request->company,
-            "position" => $request->position,
-            "salary" => $request->salary
-        ]);
-        return redirect()->route("job.index");
+        try {
+            $data_validated = $request->validate([
+                "company" => "required",
+                "position" => "required",
+                "salary" => "required|numeric"
+            ]);
+            Job::create($data_validated);
+    
+            return redirect()->route("job.index")->with("success", "Loker berhasil disimpan");
+        } catch(Exception $e) {
+            return redirect()->route("job.index")->with("error", "Proses Insert Gagal");
+        }
     }
 
     /**
@@ -46,7 +53,8 @@ class JobController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $job = Job::findOrFail($id);
+        return view("detail", compact("job"));
     }
 
     /**
@@ -54,7 +62,9 @@ class JobController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $job = Job::findOrFail($id);
+
+        return view("edit-job", compact("job"));
     }
 
     /**
@@ -62,7 +72,14 @@ class JobController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $job = Job::findOrFail($id);
+        $job->update([
+            "company" => $request->company,
+            "position" => $request->position,
+            "salary" => $request->salary
+        ]);
+
+        return redirect()->route("job.index");
     }
 
     /**
@@ -70,6 +87,9 @@ class JobController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $job = Job::findOrFail($id);
+        $job->delete();
+
+        return redirect()->route("job.index");
     }
 }

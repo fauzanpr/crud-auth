@@ -16,6 +16,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::resource('/job', JobController::class);
-Route::get('/login', [AuthController::class, "index"])->name("login");
-Route::post("/login", [AuthController::class, "login"]);
 Route::resource('/job', JobController::class)->middleware("auth");
+Route::get('/login', [AuthController::class, "index"])->name('login');
+Route::post('/login', [AuthController::class, "login"]);
